@@ -1,0 +1,85 @@
+OVERVIEW
+========
+
+libgetopt.sh is a bash implementation of getopt function.
+
+
+SYNOPSIS
+========
+
+getopt CALLBACK_FUN_NAME [ARGS]
+
+
+FEATURES
+========
+
+* short options that starts with "-"
+* long options that start with "--"
+* short options bundling
+* short option argument that starts right after option name(like -Hlocalhost)
+* long option argument that separated from option name with "="(like --host=localhost)
+* support of "--" argument for denoting of options end
+
+
+DESCRIPTION
+===========
+
+getopt parses positional arguments specified after a callback funcion
+name and execute a specified callback function for every parsed option.
+Generally getopt should be called like this:
+
+getopt process_opts "$@"
+
+Where process_opts is a callback for processing a parsed option.
+
+Callback is called with 2 arguments. The first is an option name.
+The second is an expected option argument. What is "expected option
+argument"? getopt doesn't known about mandatory arguments for options.
+It simply parse what looks like a mandatory option argument and
+pass it to callback for processing. E.g. "localhost" will be $2 value
+for every of the next args:
+
+-Hlocalhost
+-H localhost
+--host=localhost
+--host localhost
+
+A callback should decide based on the option name(generally) whether
+that option comes with an argument or not. If this option must come with
+an argument, then callback can use $2 and returns 1 to
+indicate that $2 must be removed from the positional arguments list.
+Thus, getopt willn't parse it as an option name in the next iteration.
+Otherwise, callback must returns 0.
+
+
+RETURN VALUE
+============
+
+getopt returns a number of positional argument with options,
+that can be removed from positional arguments list to easily
+work with non-option arguments.
+
+Callback function must returns 1 if an option specified in $1 comes with
+argument(i.e. we use value in $2 as an option argument). Otherwise,
+callback must returns 0.
+
+NOTES
+=====
+
+According to bash manual we can specify a number from 0 to 255(including)
+to return function. Thus, max number of positional arguments with options
+and their arguments can be 255.
+
+
+EXAMPLES
+========
+
+process_opts()
+{
+	echo "opt '$1' with something that can be it's argument '$2'"
+}
+
+source ./libgetopt.sh
+getopts process_opt "$@"
+shift $?
+
