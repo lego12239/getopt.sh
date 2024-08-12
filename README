@@ -77,6 +77,7 @@ EXAMPLES
 process_opts()
 {
 	echo "opt '$1' with something that can be it's argument '$2'"
+	return 0
 }
 
 source ./libgetopt.sh

@@ -13,6 +13,10 @@
 # ret:
 #  NUM - the number of positional arguments used for options(that must be
 #        removed from "$@" with help of shift command)
+#
+# Callback function must returns 1 if an option specified in $1 comes with
+# argument(i.e. we use value in $2 as an option argument). Otherwise,
+# callback must returns 0.
 getopts()
 {
 	local process_opt_cb opt_exists opt_name opt_arg opt_list aidx
