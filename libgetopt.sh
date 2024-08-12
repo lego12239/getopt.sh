@@ -35,13 +35,13 @@ getopts()
 			opt_list=${opt_list#$opt_name}
 			opt_name="-$opt_name"
 			if [ -z "$opt_list" ]; then
-				opt_arg=$2
+				opt_arg=${2:-}
 				shift; aidx=$((aidx + 1))
 			else
 				opt_arg=$opt_list
 			fi
 		else
-			case $1 in
+			case ${1:-} in
 				--)
 					opt_name=
 					opt_arg=
@@ -50,8 +50,8 @@ getopts()
 					;;
 				--*)
 					opt_name=${1%%=*}
-					if [ $opt_name = $1 ]; then
-						opt_arg=$2
+					if [ $opt_name = ${1:-} ]; then
+						opt_arg=${2:-}
 						shift; aidx=$((aidx + 1))
 					else
 						opt_arg=${1#*=}
