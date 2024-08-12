@@ -3,7 +3,7 @@
 #
 # GETOPT CODE START
 # Copyright (c) 2023 Oleg Nemanov <lego12239@yandex.ru>
-# Version: 1.0
+# Version: 1.1
 # SPDX-License-Identifier: BSD-2-Clause
 #
 # prms:
