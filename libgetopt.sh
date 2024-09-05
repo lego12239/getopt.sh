@@ -20,10 +20,12 @@
 getopts()
 {
 	local process_opt_cb opt_exists opt_name opt_arg opt_list aidx
+	local do_shift
 
 	process_opt_cb="$1"
 	shift
 
+	do_shift=
 	opt_exists=1
 	opt_name=
 	opt_arg=
@@ -55,6 +57,7 @@ getopts()
 						shift; aidx=$((aidx + 1))
 					else
 						opt_arg=${1#*=}
+						do_shift=1
 					fi
 					;;
 				-*)
@@ -74,9 +77,10 @@ getopts()
 
 		if [ "$opt_name" ]; then
 			$process_opt_cb "$opt_name" "$opt_arg"
-			if [ $? -eq 1 ]; then
+			if [ $? -eq 1 ] || [ $do_shift ]; then
 				shift; aidx=$((aidx + 1))
 				opt_list=
+				do_shift=
 			fi
 		fi
 	done
